@@ -13,7 +13,6 @@ class Contest < ApplicationRecord
   validate :completed_game_must_have_winner_and_completed_at, if: -> { status == Status::COMPLETED }
   validate :in_progress_game_must_not_have_winner_or_completed_at, if: -> { status == Status::IN_PROGRESS }
 
-
   private
 
   module ErrorMessage
