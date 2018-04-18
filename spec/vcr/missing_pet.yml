@@ -1,0 +1,40 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://wunder-pet-api-staging.herokuapp.com/pets/8952d006-46e7-4aeb-b956-ecd9990ce3f8
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      X-Pets-Token:
+      - UXhygiNEP1vYvRuPA4EluyJxLnscJ6uerTsUlnObFUqKxoyCnN
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v0.14.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Server:
+      - Cowboy
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Wed, 18 Apr 2018 17:08:50 GMT
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Wed, 18 Apr 2018 17:08:50 GMT
+recorded_with: VCR 4.0.0
