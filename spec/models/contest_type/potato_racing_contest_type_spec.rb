@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Contests::PotatoRacingContest do
+RSpec.describe ContestType::PotatoRacingContestType do
   context ".name" do
     subject { described_class.name }
 

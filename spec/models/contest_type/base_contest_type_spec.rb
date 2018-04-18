@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Contests::BaseContest do
+RSpec.describe ContestType::BaseContestType do
   subject { described_class }
 
   context ".name" do

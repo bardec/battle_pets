@@ -1,5 +1,5 @@
-module Contests
-  class PotatoRacingContest < BaseContest
+module ContestType
+  class PotatoRacingContestType < BaseContestType
     def self.name 
       'potato_racing'
     end

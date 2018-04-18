@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Contests::ArmWrestlingContest do
+RSpec.describe ContestType::ArmWrestlingContestType do
   describe ".name" do
     subject { described_class.name } 
 

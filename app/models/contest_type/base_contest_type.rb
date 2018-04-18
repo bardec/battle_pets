@@ -1,5 +1,5 @@
-module Contests
-  class BaseContest
+module ContestType
+  class BaseContestType
     def self.name
       raise NotImplementedError
     end

@@ -1,5 +1,5 @@
-module Contests
-  class ArmWrestlingContest < BaseContest
+module ContestType
+  class ArmWrestlingContestType < BaseContestType
     def self.name
       'arm_wrestling'
     end
