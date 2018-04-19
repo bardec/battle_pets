@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ContestInitializationService do
   let!(:errors) { [SecureRandom.uuid, SecureRandom.uuid] }
   let!(:invalid_contest_creation_validation_service_result) { instance_double(ContestCreationValidationService, success?: false, errors: errors) }
-  let!(:valid_contest_creation_validation_service_result) { instance_double(ContestCreationValidationService, success?: true) }
+  let!(:valid_contest_creation_validation_service_result) { instance_double(ContestCreationValidationService, success?: true) } 
   let!(:contest_creation_validation_service) { class_double(ContestCreationValidationService, call: nil) }
 
   let!(:contest) { Contest.new }
@@ -11,10 +11,13 @@ RSpec.describe ContestInitializationService do
   let!(:valid_contest_creation_service_result) { instance_double(ContestCreationService, success?: true, contest: contest) }
   let!(:contest_creation_service) { class_double(ContestCreationService, call: nil) }
 
+  let!(:contest_play_job) { class_double(ContestPlayJob, enqueue: nil) }
+
   let!(:configured_service) do
     described_class.new(
       contest_creation_validation_service: contest_creation_validation_service,
-      contest_creation_service: contest_creation_service
+      contest_creation_service: contest_creation_service,
+      contest_play_job: contest_play_job
     )
   end
 
@@ -49,6 +52,11 @@ RSpec.describe ContestInitializationService do
         it "returns the contest" do
           expect(subject.contest).to eq(contest)
         end
+
+        it "enqueues a job" do
+          expect(contest_play_job).to receive(:enqueue).with(contest: contest)
+          subject
+        end
       end
 
       context "creation is not successful" do
@@ -62,6 +70,11 @@ RSpec.describe ContestInitializationService do
 
         it "is not success" do
           expect(subject).to_not be_success
+        end
+
+        it "does not enqueue a job" do
+          expect(contest_play_job).to_not receive(:enqueue)
+          subject
         end
       end
     end
@@ -81,6 +94,11 @@ RSpec.describe ContestInitializationService do
 
       it "returns errors" do
         expect(subject.errors).to eq(errors)
+      end
+
+      it "does not enqueue a job" do
+        expect(contest_play_job).to_not receive(:enqueue)
+        subject
       end
     end
   end

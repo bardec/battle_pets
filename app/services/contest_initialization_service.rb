@@ -11,10 +11,12 @@ class ContestInitializationService
 
   def initialize(
     contest_creation_validation_service: ContestCreationValidationService,
-    contest_creation_service: ContestCreationService
+    contest_creation_service: ContestCreationService,
+    contest_play_job: ContestPlayJob
   )
     @contest_creation_validation_service = contest_creation_validation_service
     @contest_creation_service = contest_creation_service
+    @contest_play_job = contest_play_job
   end
 
   def call(contest_type:, first_competitor:, second_competitor:)
@@ -26,6 +28,8 @@ class ContestInitializationService
     return self unless contest_creation_result.success?
 
     @contest = contest_creation_result.contest
+
+    contest_play_job.enqueue(contest: @contest)
 
     self
   end
@@ -42,6 +46,7 @@ class ContestInitializationService
   private
   attr_reader :contest_creation_validation_service,
     :contest_creation_service,
+    :contest_play_job,
     :contest_type, 
     :first_competitor, 
     :second_competitor
