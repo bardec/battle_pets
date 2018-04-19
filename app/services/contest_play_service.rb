@@ -5,10 +5,12 @@ class ContestPlayService
 
   def initialize(
     get_pet_service: PetApi::GetPetService, 
+    contest_type_list_service: ContestTypeListService,
     contest_repo: Contest,
     complete_contest_transition_service: CompleteContestTransitionService
   )
     @get_pet_service = get_pet_service
+    @contest_type_list_service = contest_type_list_service
     @contest_repo = contest_repo
     @complete_contest_transition_service = complete_contest_transition_service
   end
@@ -18,7 +20,7 @@ class ContestPlayService
     first_competitor_pet = get_pet_service.call(pet_id: contest.first_competitor).pet
     second_competitor_pet = get_pet_service.call(pet_id: contest.second_competitor).pet
     
-    contest_type_class = ContestType::BaseContestType.subclasses.detect { |klass| klass.name == contest.contest_type }
+    contest_type_class = contest_type_list_service.names_to_types_for_in_progress_contests[contest.contest_type]
 
     first_competitor_score = contest_type_class.score_competitor(pet: first_competitor_pet)
     second_competitor_score = contest_type_class.score_competitor(pet: second_competitor_pet)
@@ -37,6 +39,7 @@ class ContestPlayService
 
   private
   attr_reader :get_pet_service,
+    :contest_type_list_service,
     :contest_repo,
     :complete_contest_transition_service
 end

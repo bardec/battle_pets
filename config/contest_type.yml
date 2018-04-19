@@ -1,0 +1,3 @@
+test: &test
+  black_listed_names:
+    - arm_wrestling

@@ -1,6 +1,5 @@
 class ContestCreationValidationService
-  attr_reader :errors
-
+  attr_reader :errors 
   def self.call(contest_type:, first_competitor:, second_competitor:)
     new.call(
       contest_type: contest_type, 
@@ -10,9 +9,11 @@ class ContestCreationValidationService
   end
 
   def initialize(
-    get_pet_service: PetApi::GetPetService
+    get_pet_service: PetApi::GetPetService,
+    contest_type_list_service: ContestTypeListService
   )
     @get_pet_service = get_pet_service
+    @contest_type_list_service = contest_type_list_service
     @errors = []
   end
 
@@ -42,14 +43,14 @@ class ContestCreationValidationService
 
   private
   attr_reader :get_pet_service, 
+    :contest_type_list_service,
     :contest_type, 
     :first_competitor, 
     :second_competitor
 
   def contest_type_is_valid?
-    @contest_type_valid ||= ContestType::BaseContestType
-      .subclasses
-      .map(&:name)
+    @contest_type_valid ||= contest_type_list_service
+      .names_to_types_for_new_contests
       .include?(contest_type)
   end
 
