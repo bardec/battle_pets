@@ -24,7 +24,6 @@ RSpec.describe ContestCreationValidationService do
       )
     end
 
-
     context "valid state" do
       context "when both competitors are found and the contest is created" do
         before do
@@ -48,6 +47,10 @@ RSpec.describe ContestCreationValidationService do
         it "is not success" do
           expect(subject).to_not be_success
         end
+
+        it "contains an error" do
+          expect(subject.errors).to contain_exactly("first_competitor: '#{first_competitor}' does not exist")
+        end
       end
 
       context "when the second_competitor is not found" do
@@ -58,6 +61,10 @@ RSpec.describe ContestCreationValidationService do
 
         it "is not success" do
           expect(subject).to_not be_success
+        end
+
+        it "contains an error" do
+          expect(subject.errors).to contain_exactly("second_competitor: '#{second_competitor}' does not exist")
         end
       end
 
@@ -70,6 +77,10 @@ RSpec.describe ContestCreationValidationService do
 
         it "is not success" do
           expect(subject).to_not be_success
+        end
+
+        it "contains an error" do
+          expect(subject.errors).to contain_exactly("contest_type: '#{contest_type}' does not exist")
         end
       end
     end

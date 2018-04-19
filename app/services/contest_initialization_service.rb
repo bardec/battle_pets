@@ -35,6 +35,10 @@ class ContestInitializationService
       contest_creation_result.success?
   end
 
+  def errors
+    contest_creation_validation_result.errors
+  end
+
   private
   attr_reader :contest_creation_validation_service,
     :contest_creation_service,

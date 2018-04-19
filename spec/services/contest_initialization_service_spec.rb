@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ContestInitializationService do
-  let!(:invalid_contest_creation_validation_service_result) { instance_double(ContestCreationValidationService, success?: false) }
+  let!(:errors) { [SecureRandom.uuid, SecureRandom.uuid] }
+  let!(:invalid_contest_creation_validation_service_result) { instance_double(ContestCreationValidationService, success?: false, errors: errors) }
   let!(:valid_contest_creation_validation_service_result) { instance_double(ContestCreationValidationService, success?: true) }
   let!(:contest_creation_validation_service) { class_double(ContestCreationValidationService, call: nil) }
 
@@ -79,7 +80,7 @@ RSpec.describe ContestInitializationService do
       end
 
       it "returns errors" do
-        expect(true).to eq(false)
+        expect(subject.errors).to eq(errors)
       end
     end
   end
