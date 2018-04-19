@@ -23,10 +23,10 @@ end
 def new_pet
   { 
     "name": SecureRandom.hex(5), 
-    "strength": Random.rand(100), 
-    "intelligence": Random.rand(100), 
-    "speed": Random.rand(100), 
-    "integrity": Random.rand(100) 
+    "strength": Random.rand(1..99), 
+    "intelligence": Random.rand(1..99), 
+    "speed": Random.rand(1..99), 
+    "integrity": Random.rand(1..99) 
   }
 end
 
