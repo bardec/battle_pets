@@ -1,0 +1,9 @@
+default: &default
+  url: https://wunder-pet-api-staging.herokuapp.com
+  api_key: UXhygiNEP1vYvRuPA4EluyJxLnscJ6uerTsUlnObFUqKxoyCnN
+
+development:
+  <<: *default
+
+test:
+  <<: *default
