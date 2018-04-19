@@ -45,8 +45,6 @@ RSpec.describe ContestCreationService do
       it "is not success" do
         expect(subject).to_not be_success
       end
-
-      #todo implement errors?
     end
   end
 end
