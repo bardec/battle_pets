@@ -38,6 +38,18 @@ RSpec.describe ContestCreationValidationService do
     end
 
     context "invalid state" do
+      context "when any of the fields are nil" do
+        let!(:first_competitor) { nil }
+
+        it "is not success" do
+          expect(subject).to_not be_success
+        end
+
+        it "contains an error" do
+          expect(subject.errors).to contain_exactly("first_competitor, second_competitor, and type must be present")
+        end
+      end
+
       context "when the first_competitor is not found" do
         before do
           allow(get_pet_service).to receive(:call).with(pet_id: first_competitor).and_return(invalid_get_pet_service_result)

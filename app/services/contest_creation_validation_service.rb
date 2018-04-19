@@ -22,6 +22,11 @@ class ContestCreationValidationService
     @first_competitor = first_competitor
     @second_competitor = second_competitor
 
+    if !all_params_are_present?
+      @errors << "first_competitor, second_competitor, and type must be present"
+      return self
+    end
+
     if !contest_type_is_valid?
       @errors << "contest_type: '#{contest_type}' does not exist"
     end
@@ -38,7 +43,7 @@ class ContestCreationValidationService
   end
 
   def success?
-    contest_type_is_valid? && first_competitor_exists? && second_competitor_exists?
+   all_params_are_present? && contest_type_is_valid? && first_competitor_exists? && second_competitor_exists?
   end
 
   private
@@ -47,6 +52,12 @@ class ContestCreationValidationService
     :contest_type, 
     :first_competitor, 
     :second_competitor
+
+  def all_params_are_present?
+    @all_params_are_present ||= contest_type.present? && 
+      first_competitor.present? && 
+      second_competitor.present?
+  end
 
   def contest_type_is_valid?
     @contest_type_valid ||= contest_type_list_service

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ContestSerializerSerializer do
+RSpec.describe ContestSerializer do
   let!(:configured_serializer) { described_class.new(contest) }
 
   context "#serializable_hash" do

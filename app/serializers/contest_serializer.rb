@@ -1,4 +1,4 @@
-class ContestSerializerSerializer < ActiveModel::Serializer
+class ContestSerializer < ActiveModel::Serializer
   attribute :contest_type, key: :type 
   attributes :id, 
     :first_competitor, 
@@ -6,5 +6,4 @@ class ContestSerializerSerializer < ActiveModel::Serializer
     :winner,
     :status,
     :completed_at
-
 end
