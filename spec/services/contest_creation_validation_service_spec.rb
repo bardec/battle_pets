@@ -25,7 +25,7 @@ RSpec.describe ContestCreationValidationService do
     end
 
     context "valid state" do
-      context "when both competitors are found and the contest is created" do
+      context "when both competitors are found" do
         before do
           allow(get_pet_service).to receive(:call).with(pet_id: first_competitor).and_return(valid_get_pet_service_result)
           allow(get_pet_service).to receive(:call).with(pet_id: second_competitor).and_return(valid_get_pet_service_result)
@@ -68,7 +68,7 @@ RSpec.describe ContestCreationValidationService do
         end
       end
 
-      context "when both the contest_type does not exist" do
+      context "when the contest_type does not exist" do
         let!(:contest_type) { "invalid_type" }
         before do
           allow(get_pet_service).to receive(:call).with(pet_id: first_competitor).and_return(valid_get_pet_service_result)
