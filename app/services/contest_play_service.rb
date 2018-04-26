@@ -4,42 +4,38 @@ class ContestPlayService
   end
 
   def initialize(
-    get_pet_service: PetApi::GetPetService, 
-    contest_type_list_service: ContestTypeListService,
     contest_repo: Contest,
-    complete_contest_transition_service: CompleteContestTransitionService
+    complete_contest_transition_service: CompleteContestTransitionService,
+    contest_type_list_service: ContestTypeListService,
+    single_round_play_service: SingleRoundPlayService,
+    forever_round_play_service: ForeverRoundPlayService
   )
-    @get_pet_service = get_pet_service
-    @contest_type_list_service = contest_type_list_service
     @contest_repo = contest_repo
+    @contest_type_list_service = contest_type_list_service
     @complete_contest_transition_service = complete_contest_transition_service
+    @single_round_play_service = single_round_play_service
+    @forever_round_play_service = forever_round_play_service
   end
 
   def call(contest_id:)
     contest = contest_repo.find(contest_id)
-    first_competitor_pet = get_pet_service.call(pet_id: contest.first_competitor).pet
-    second_competitor_pet = get_pet_service.call(pet_id: contest.second_competitor).pet
-    
-    contest_type_class = contest_type_list_service.names_to_types_for_in_progress_contests[contest.contest_type]
 
-    first_competitor_score = contest_type_class.score_competitor(pet: first_competitor_pet)
-    second_competitor_score = contest_type_class.score_competitor(pet: second_competitor_pet)
+    contest_type = contest_type_list_service.names_to_types_for_in_progress_contests[contest.contest_type]
 
-    if first_competitor_score > second_competitor_score
-      complete_contest_transition_service.call(winner_id: contest.first_competitor, contest: contest)
-    elsif second_competitor_score > first_competitor_score
-      complete_contest_transition_service.call(winner_id: contest.second_competitor, contest: contest)
-    else
-      winner_id = [contest.first_competitor, contest.second_competitor].sample
-      complete_contest_transition_service.call(winner_id: winner_id, contest: contest)
+    winner_id = if contest_type.rounds == -1
+      forever_round_play_service.call(contest: contest)
+    elsif contest_type.rounds == 1
+      single_round_play_service.call(contest: contest)
     end
 
+    complete_contest_transition_service.call(winner_id: winner_id, contest: contest)
     self
   end
 
   private
-  attr_reader :get_pet_service,
-    :contest_type_list_service,
-    :contest_repo,
-    :complete_contest_transition_service
+  attr_reader :contest_repo,
+    :complete_contest_transition_service,
+    :single_round_play_service,
+    :forever_round_play_service,
+    :contest_type_list_service
 end

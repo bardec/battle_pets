@@ -11,6 +11,12 @@ RSpec.describe ContestType::BaseContestType do
     end
   end
 
+  context ".rounds" do
+    it "defaults to one" do
+      expect(subject.rounds).to eq(1)
+    end
+  end
+
   context ".score_competitor" do
     let!(:pet) { double(PetApi::Pet) }
 

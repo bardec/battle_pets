@@ -21,12 +21,12 @@ arena_conn = Faraday.new(url: ARENA_URL) do |faraday|
 end
 
 def new_pet
-  { 
-    "name": SecureRandom.hex(5), 
-    "strength": Random.rand(1..99), 
-    "intelligence": Random.rand(1..99), 
-    "speed": Random.rand(1..99), 
-    "integrity": Random.rand(1..99) 
+  {
+    "name": SecureRandom.hex(5),
+    "strength": Random.rand(1..99),
+    "intelligence": Random.rand(1..99),
+    "speed": Random.rand(1..99),
+    "integrity": Random.rand(1..99)
   }
 end
 
@@ -60,7 +60,7 @@ new_contest = {
   contest: {
     first_competitor: first_pet_id,
     second_competitor: second_pet_id,
-    type: 'potato_racing'
+    type: 'beer_drinking'
   }
 }
 
